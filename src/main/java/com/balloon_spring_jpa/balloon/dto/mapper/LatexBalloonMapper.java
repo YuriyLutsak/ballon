@@ -17,49 +17,15 @@ public interface LatexBalloonMapper {
     LatexBalloon mapToLatexBalloonEntity(LatexBalloonDTO latexBalloon);
 
 
-    // НАЧАЛО РЕКУРСИИ
-    @Named("mapToLatexBalloonDTOWithoutLatexQuantity")
+        // НАЧАЛО РЕКУРСИИ
+    @Named("mapToLatexBalloonWithoutQuantityInOrder")
     @Mapping(target = "latexBalloonQuantityInOrder", ignore = true)
-    LatexBalloonDTO mapToLatexBalloonDTOWithoutLatexQuantity(LatexBalloon latexBalloonEntity);
+    LatexBalloonDTO mapToLatexBalloonWithoutQuantityInOrder(LatexBalloon latexBalloonEntity);
 
-    @Named("mapToLatexBalloonListDTOWithoutLatexQuantity")
-    @IterableMapping(qualifiedByName = "mapToLatexBalloonDTOWithoutLatexQuantity")
-    List<LatexBalloonDTO> mapToLatexBalloonListDTOWithoutLatexQuantity(List<LatexBalloon> latexBalloonEntities);
-
-
-
-    @Mapping(target = "latexBalloonQuantityInOrder",
-            qualifiedByName = {"LatexBalloonMapper", "mapToLatexBalloonListDTOWithoutLatexQuantity"})
+    @Mapping(target = "latexBalloonQuantityInOrder", ignore = true)
     LatexBalloonDTO mapToLatexBalloonDTO(LatexBalloon latexBalloonEntity);
 
+    @Mapping(target = "latexBalloonQuantityInOrder",ignore = true)
     List<LatexBalloonDTO> mapToLatexBalloonListDTO(List<LatexBalloon> latexBalloonEntities);
 
-    List<LatexBalloon> mapToLatexBalloonListEntity(List<LatexBalloonDTO> latexBalloons);
-
-
-
-
-
-
-
-
-
-
-
-//    @Mapping(target = "id" , ignore = true)
-//    @Mapping(target = "balloonType", source = "from.balloonType")
-//    @Mapping(target = "size" , source = "from.size")
-//    @Mapping(target = "cost" , source = "from.cost")
-//    @Mapping(target = "stockBalance" , source = "from.stockBalance")
-//    @Mapping(target = "glue" , source = "from.glue")
-//    @Mapping(target = "latexBalloonQuantityInOrder" , source = "from.latexBalloonQuantityInOrder")
-//    LatexBalloon mapToExistDTO(LatexBalloon from, LatexBalloonDTO to);
-
-    //  public default void mapToExistDTO(LatexBalloon from, LatexBalloonDTO to) {
-//        to.setStockBalance(from.getStockBalance());
-//        to.setCost(from.getCost());
-//        to.setSize(from.getSize());
-//        to.setGlue(from.isGlue());
-//        to.setOrders(mapper.mapToQuantityInOrderDTOList(from.getOrders()));
-    // }
 }

@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO save(CustomerDTO customer) {
         var toEntity = customerMapper.mapToCustomerEntity(customer);
-        var savingEntity = customerRepository.save(toEntity);
+        var savingEntity = customerRepository.save(toEntity); // хайбернет не сохраняет в бд(тут хайбер сохраняет в бд) значит проблема с энтити скорее всего со связями
         return customerMapper.mapToCustomerDTO(savingEntity);
     }
 

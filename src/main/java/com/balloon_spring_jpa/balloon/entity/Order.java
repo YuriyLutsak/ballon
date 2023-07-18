@@ -4,11 +4,13 @@ import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,17 +35,14 @@ public class Order {
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
-    @CreatedDate
-    @Timestamp
-    // @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    @Column(name = "date_time")
-    private LocalDateTime dateTime = LocalDateTime.now();
+    @Column(name = "date_time", columnDefinition = "TIMESTAMP", updatable = false)
+    private LocalDateTime dateTime;
+
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Customer customer;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -51,6 +50,14 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FoilBalloonQuantityInOrder> foilBalloonQuantity;
+
+
+    @PrePersist
+    public void prePersist() {
+        if (dateTime == null) {
+            dateTime = LocalDateTime.now();
+        }
+    }
 
 
 //    @ManyToMany(fetch = FetchType.LAZY)

@@ -17,7 +17,7 @@
  LatexBalloonQuantityInOrder
  LatexBalloon
 
-
+при get http://localhost:8080/api/orders я вычислил такую зациклинность
 order -> latexBalloonQuantity -> latexBalloon -> latexBalloonQuantity
 
 in latexBalloon обнулить latexBalloonQuantityInOrder

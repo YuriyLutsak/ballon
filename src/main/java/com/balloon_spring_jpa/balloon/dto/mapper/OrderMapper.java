@@ -7,19 +7,18 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {LatexBalloonQuantityInOrderMapper.class, FoilBalloonQuantityInOrderMapper.class})
+@Mapper(componentModel = "spring", uses = {LatexBalloonQuantityInOrderMapper.class, FoilBalloonQuantityInOrderMapper.class, CustomerMapper.class})
 public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     Order mapToOrderEntity(OrderDTO order);
 
-    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "customer", qualifiedByName = {"CustomerMapper", "mapToCustomerDTO"})
     @Mapping(target = "latexBalloonQuantity",
             qualifiedByName = {"LatexBalloonQuantityInOrderMapper", "mapToQuantityInOrderDTOListWithoutOrder"})
     @Mapping(target = "foilBalloonQuantity",
     qualifiedByName = {"FoilBalloonQuantityInOrderMapper", "mapToQuantityInOrderDTOListWithoutOrder"})
     OrderDTO mapToOrderDTO(Order orderEntity);
-
 
     List<OrderDTO> mapToOrderDTOList(List<Order> orderEntities);
 

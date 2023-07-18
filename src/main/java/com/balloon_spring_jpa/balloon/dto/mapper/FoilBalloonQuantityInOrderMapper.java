@@ -10,10 +10,11 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Named("FoilBalloonQuantityInOrderMapper")
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {FoilBalloonMapper.class})
 public interface FoilBalloonQuantityInOrderMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "foilBalloon", qualifiedByName = {"FoilBalloonMapper", "mapToFoilBalloonDTO"})
     FoilBalloonQuantityInOrderDTO mapToQuantityInOrderDTO(FoilBalloonQuantityInOrder quantityInOrder);
 
     @Named("mapToQuantityInOrderDTOListWithoutOrder")
