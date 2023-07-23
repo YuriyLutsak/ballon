@@ -78,12 +78,10 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
                 throw new RuntimeException("Quantity of foil balloons in your order bigger then in stock balance");
             }
 
-            totalPrice =
-                    totalPrice.add(balloonFromDB.getCost().multiply(BigDecimal.valueOf(quantityFromListDTO)));
+            totalPrice = totalPrice.add(balloonFromDB.getCost().multiply(BigDecimal.valueOf(quantityFromListDTO)));
 
             balloonFromDB.setStockBalance(result);
             balloonFromListDTO.setStockBalance(result);
-
             balloonFromListDTO.setCost(balloonFromDB.getCost());
             balloonFromListDTO.setSize(balloonFromDB.getSize());
             balloonFromListDTO.setFoilBalloonType(balloonFromDB.getFoilBalloonType());

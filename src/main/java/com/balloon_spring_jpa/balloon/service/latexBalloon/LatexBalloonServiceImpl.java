@@ -82,20 +82,14 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
 
             var priceOfOrder = balloonFromDB.getCost().multiply(BigDecimal.valueOf(quantity));
 
-            totalPrice =
-                    totalPrice.add(priceOfOrder); //->
-            // totalPrice = totalPrice + priceOfOrder  если бы были инты
-            // totalPrice += priceOfOrder
+            totalPrice = totalPrice.add(priceOfOrder);
 
-
-            balloonFromDB.setStockBalance(result); // только присваиваем в энтити, чтоб сохрагнилось автоматом
-            balloonFromListDTO.setStockBalance(result); // присвоение на отправку фронтэнда
-            // это делаем для красоты, чтоб небыло поля null
+            balloonFromDB.setStockBalance(result);
+            balloonFromListDTO.setStockBalance(result);
             balloonFromListDTO.setGlue(balloonFromDB.isGlue());
             balloonFromListDTO.setCost(balloonFromDB.getCost());
             balloonFromListDTO.setSize(balloonFromDB.getSize());
             balloonFromListDTO.setBalloonType(balloonFromDB.getBalloonType());
-            // конец красоте
         }
         return totalPrice;
     }

@@ -33,7 +33,7 @@ public class Customer {
     @Column(name = "total_balance")
     private BigDecimal totalBalance = BigDecimal.ZERO;
 
-    @JsonIgnore // это для мапинга из дто в json когда иде на постмен
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Order> orders;
 }

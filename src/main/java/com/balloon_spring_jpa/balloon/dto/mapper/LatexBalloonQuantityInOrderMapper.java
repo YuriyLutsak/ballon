@@ -20,13 +20,13 @@ public interface LatexBalloonQuantityInOrderMapper {
     @IterableMapping(qualifiedByName = "mapToQuantityInOrderDTOWithoutOrder")
     List<LatexBalloonQuantityInOrderDTO> mapToQuantityInOrderDTOListWithoutOrder(List<LatexBalloonQuantityInOrder> quantityInOrders);
 
-    @Mapping(target = "order",ignore = true)
-    List<LatexBalloonQuantityInOrderDTO> mapToQuantityInOrderDTOList(List<LatexBalloonQuantityInOrder> quantityInOrders);
-
     @Named("mapToQuantityInOrderDTOWithoutOrder")
     @Mapping(target = "order", ignore = true)
     @Mapping(target = "latexBalloon", qualifiedByName ={"LatexBalloonMapper", "mapToLatexBalloonWithoutQuantityInOrder"})
     LatexBalloonQuantityInOrderDTO mapToQuantityInOrderDTOWithoutOrder(LatexBalloonQuantityInOrder quantityInOrder);
+
+    @Mapping(target = "order",ignore = true)
+    List<LatexBalloonQuantityInOrderDTO> mapToQuantityInOrderDTOList(List<LatexBalloonQuantityInOrder> quantityInOrders);
 
     @Mapping(target = "order", ignore = true)
     LatexBalloonQuantityInOrderDTO mapToQuantityInOrderDTO(LatexBalloonQuantityInOrder quantityInOrder);

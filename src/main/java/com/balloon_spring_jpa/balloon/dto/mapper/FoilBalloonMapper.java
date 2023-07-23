@@ -1,9 +1,7 @@
 package com.balloon_spring_jpa.balloon.dto.mapper;
 
 import com.balloon_spring_jpa.balloon.dto.FoilBalloonDTO;
-import com.balloon_spring_jpa.balloon.dto.FoilBalloonQuantityInOrderDTO;
 import com.balloon_spring_jpa.balloon.entity.FoilBalloon;
-import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -21,5 +19,6 @@ public interface FoilBalloonMapper {
     @Mapping(target = "foilBalloonQuantityInOrders", ignore = true)
     FoilBalloonDTO mapToFoilBalloonDTO(FoilBalloon foilBalloonEntity);
 
+    @Mapping(target = "foilBalloonQuantityInOrders", ignore = true)
     List<FoilBalloonDTO> mapToListFoilBalloonDTO(List<FoilBalloon> balloonListEntity);
 }

@@ -2,12 +2,16 @@ package com.balloon_spring_jpa.balloon.service.order;
 
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import com.balloon_spring_jpa.balloon.dto.OrderDTO;
+import com.balloon_spring_jpa.balloon.dto.mapper.CustomerMapper;
+import com.balloon_spring_jpa.balloon.dto.mapper.FoilBalloonMapper;
+import com.balloon_spring_jpa.balloon.dto.mapper.LatexBalloonMapper;
 import com.balloon_spring_jpa.balloon.dto.mapper.OrderMapper;
 import com.balloon_spring_jpa.balloon.entity.Customer;
 import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
 import com.balloon_spring_jpa.balloon.entity.LatexBalloonQuantityInOrder;
 import com.balloon_spring_jpa.balloon.entity.Order;
 import com.balloon_spring_jpa.balloon.repository.OrderRepository;
+import com.balloon_spring_jpa.balloon.service.customer.CustomerService;
 import com.balloon_spring_jpa.balloon.service.foilBalloon.FoilBalloonService;
 import com.balloon_spring_jpa.balloon.service.latexBalloon.LatexBalloonService;
 import jakarta.transaction.Transactional;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +29,10 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final CustomerMapper customerMapper;
     private final FoilBalloonService foilBalloonService;
     private final LatexBalloonService latexBalloonService;
+    private final CustomerService customerService;
 
     @Transactional
     @Override
@@ -48,54 +55,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public OrderDTO update(OrderDTO order, UUID id) { //TODO update price
+    public OrderDTO update(OrderDTO order, UUID id) {
         orderRepository.findById(id).orElseThrow();
         var toEntity = orderMapper.mapToOrderEntity(order);
         toEntity.setId(id);
         var savingEntity = orderRepository.save(toEntity);
         return orderMapper.mapToOrderDTO(savingEntity);
     }
-
-    @Transactional
-    @Override
-    public OrderDTO updateStatus(OrderStatus status, UUID id) {
-        var orderFromDB = orderRepository.findById(id).orElseThrow();
-        var customerFromOrder = orderFromDB.getCustomer();
-
-        if (status.equals(OrderStatus.DONE)) {
-            customerFromOrder.setTotalBalance(orderFromDB.getTotalPrice());
-        }
-        
-        return orderMapper.mapToOrderDTO(orderFromDB);
-    }
-
-    /**
-     * Добавить логику скидки с учетом Сustomer.totalBalabce.
-     */
-
-    private void personalCustomerDiscount(UUID id) {
-        var orderFromDB = orderRepository.findById(id).orElseThrow();
-        var customerFromDB = orderFromDB.getCustomer();
-        var customerTotalBalance = customerFromDB.getTotalBalance();
-
-        int caseDiscount = customerTotalBalance.intValue();
-
-        switch (caseDiscount) {
-            case 100000 -> {
-                // totalPrice.subtract(totalPrice.multiply(new BigDecimal(5)).divide(new BigDecimal(100)));
-                var discountFivePercent = caseDiscount - caseDiscount * 0.05;
-            }
-            case 70000 -> {
-                var discountThreePercent = caseDiscount - caseDiscount * 0.03;
-            }
-            case 50000 -> {
-                var discountOnePercent = caseDiscount - caseDiscount * 0.01;
-            }
-        }
-
-        customerFromDB.setTotalBalance(BigDecimal.valueOf(caseDiscount));
-    }
-
 
     @Transactional
     @Override
@@ -115,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderDTO.setTotalPrice(totalPriceOfOrder);
+        orderDTO.setTotalPrice(orderPriceWithPersonalDiscount(orderDTO));
 
         var orderEntity = orderMapper.mapToOrderEntity(orderDTO);
 
@@ -126,9 +93,6 @@ public class OrderServiceImpl implements OrderService {
 
         if (orderEntity.getFoilBalloonQuantity() != null) {
             for (FoilBalloonQuantityInOrder inOrder : orderEntity.getFoilBalloonQuantity()) {
-                //  cascade = CascadeType.ALL)  в фоилбфлунах не нужно
-//                FoilBalloon detached = inOrder.getFoilBalloon();
-//                inOrder.setFoilBalloon(entityManager.merge(detached));
                 inOrder.setOrder(orderEntity);
             }
         }
@@ -137,16 +101,43 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.mapToOrderDTO(savedEntity);
     }
+
+    @Transactional
+    @Override
+    public OrderDTO updateStatus(OrderStatus status, UUID id) {
+        var orderFromDB = orderRepository.findById(id).orElseThrow();
+        var customerFromOrder = orderFromDB.getCustomer();
+
+        if (status.equals(OrderStatus.DONE)) {
+            var resultBalance = customerFromOrder.getTotalBalance().add(orderFromDB.getTotalPrice());
+            customerFromOrder.setTotalBalance(resultBalance);
+            customerService.save(customerMapper.mapToCustomerDTO(customerFromOrder));
+        }
+
+        return orderMapper.mapToOrderDTO(orderFromDB);
+    }
+
+    private BigDecimal orderPriceWithPersonalDiscount(OrderDTO orderDTO) {
+
+        var customerDTO = orderDTO.getCustomer();
+        var customerFromDB = customerService.findById(customerDTO.getId());
+        var customerTotalBalance = customerFromDB.getTotalBalance();
+
+        BigDecimal orderPriceWithDiscount;
+
+        if (customerTotalBalance.compareTo(new BigDecimal(100000)) > 0) {
+            orderPriceWithDiscount = orderDTO.getTotalPrice()
+                    .subtract(orderDTO.getTotalPrice().multiply(new BigDecimal(0.05)));
+        } else if (customerTotalBalance.compareTo(new BigDecimal(70000)) > 0) {
+            orderPriceWithDiscount = orderDTO.getTotalPrice()
+                    .subtract(orderDTO.getTotalPrice().multiply(new BigDecimal(0.03)));
+        } else if (customerTotalBalance.compareTo(new BigDecimal(50000)) > 0) {
+            orderPriceWithDiscount = orderDTO.getTotalPrice()
+                    .subtract(orderDTO.getTotalPrice().multiply(new BigDecimal(0.01)));
+        } else {
+            orderPriceWithDiscount = orderDTO.getTotalPrice();
+        }
+
+        return orderPriceWithDiscount.setScale(2, RoundingMode.HALF_UP);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

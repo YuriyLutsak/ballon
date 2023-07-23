@@ -21,7 +21,7 @@ import java.util.UUID;
 public class LatexBalloon {
 
     @Id
-    @GeneratedValue//(generator = "UUID")
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
@@ -44,5 +44,4 @@ public class LatexBalloon {
     @JsonIgnore
     @OneToMany(mappedBy = "latexBalloon", fetch = FetchType.LAZY)
     private List<LatexBalloonQuantityInOrder> latexBalloonQuantityInOrder;
-
 }

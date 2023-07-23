@@ -1,11 +1,11 @@
 package com.balloon_spring_jpa.balloon.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class FoilBalloonQuantityInOrder {
 
      @Column(name = "id")
      @Id
-     @GeneratedValue//(generator = "UUID")
+     @GeneratedValue
      private UUID id;
 
      @Column(name = "quantity")

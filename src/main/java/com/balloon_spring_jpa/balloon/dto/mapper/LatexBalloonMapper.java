@@ -2,7 +2,6 @@ package com.balloon_spring_jpa.balloon.dto.mapper;
 
 import com.balloon_spring_jpa.balloon.dto.LatexBalloonDTO;
 import com.balloon_spring_jpa.balloon.entity.LatexBalloon;
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -10,14 +9,12 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Named("LatexBalloonMapper")
-@Mapper(componentModel = "spring", uses = {LatexBalloonMapper.class, LatexBalloonQuantityInOrderMapper.class})
+@Mapper(componentModel = "spring")
 public interface LatexBalloonMapper {
 
     @Mapping(target = "id", ignore = true)
     LatexBalloon mapToLatexBalloonEntity(LatexBalloonDTO latexBalloon);
 
-
-        // НАЧАЛО РЕКУРСИИ
     @Named("mapToLatexBalloonWithoutQuantityInOrder")
     @Mapping(target = "latexBalloonQuantityInOrder", ignore = true)
     LatexBalloonDTO mapToLatexBalloonWithoutQuantityInOrder(LatexBalloon latexBalloonEntity);

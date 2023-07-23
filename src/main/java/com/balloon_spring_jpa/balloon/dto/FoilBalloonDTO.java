@@ -1,7 +1,6 @@
 package com.balloon_spring_jpa.balloon.dto;
 
 import com.balloon_spring_jpa.balloon.balloonEnum.FoilBalloonType;
-import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

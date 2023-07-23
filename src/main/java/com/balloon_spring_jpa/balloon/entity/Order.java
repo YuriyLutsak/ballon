@@ -2,15 +2,10 @@ package com.balloon_spring_jpa.balloon.entity;
 
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +20,7 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue//(generator = "UUID")
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
@@ -37,7 +32,6 @@ public class Order {
 
     @Column(name = "date_time", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime dateTime;
-
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
@@ -51,28 +45,10 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FoilBalloonQuantityInOrder> foilBalloonQuantity;
 
-
     @PrePersist
     public void prePersist() {
         if (dateTime == null) {
             dateTime = LocalDateTime.now();
         }
     }
-
-
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "order_foil_balloons",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "foil_balloons_id")
-//    )
-//    private List<FoilBalloon> foilBalloons;
-
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "order_latex_balloon",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "latex_balloon_id")
-//    )
-//    private List<LatexBalloon> latexBalloons;
 }

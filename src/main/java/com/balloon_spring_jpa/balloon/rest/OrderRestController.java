@@ -3,6 +3,7 @@ package com.balloon_spring_jpa.balloon.rest;
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import com.balloon_spring_jpa.balloon.dto.OrderDTO;
 import com.balloon_spring_jpa.balloon.service.order.OrderServiceImpl;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class OrderRestController {
         return orderService.update(order, id);
     }
 
-    @PatchMapping("/orders/{id}/{status} ")
+    @PatchMapping("/orders/{id}/{status}")
     public OrderDTO updateStatus(@PathVariable UUID id, @PathVariable OrderStatus status){
         return orderService.updateStatus(status, id);
     }

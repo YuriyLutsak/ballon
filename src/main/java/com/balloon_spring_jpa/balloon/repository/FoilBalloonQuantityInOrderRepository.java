@@ -1,6 +1,5 @@
 package com.balloon_spring_jpa.balloon.repository;
 
-import com.balloon_spring_jpa.balloon.dto.FoilBalloonQuantityInOrderDTO;
 import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 

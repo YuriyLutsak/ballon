@@ -1,7 +1,6 @@
 package com.balloon_spring_jpa.balloon.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class LatexBalloonQuantityInOrder {
 
     @Id
-    @GeneratedValue//(generator = "UUID")
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
 

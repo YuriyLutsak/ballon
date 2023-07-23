@@ -1,10 +1,6 @@
 package com.balloon_spring_jpa.balloon.dto;
 
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
-import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -21,7 +21,7 @@ import java.util.UUID;
 public class FoilBalloon {
 
     @Id
-    @GeneratedValue//(generator = "UUID")
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
@@ -39,9 +39,7 @@ public class FoilBalloon {
     private int stockBalance;
 
     @JsonIgnore
-   // @ManyToMany(mappedBy = "foilBalloons")
     @OneToMany(mappedBy = "foilBalloon", fetch = FetchType.LAZY)
-    //, cascade = CascadeType.ALL) из-за это го объукт становиться detached
     private List<FoilBalloonQuantityInOrder> foilBalloonQuantityInOrders;
 }
 
