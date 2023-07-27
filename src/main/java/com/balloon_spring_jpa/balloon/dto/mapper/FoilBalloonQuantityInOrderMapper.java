@@ -13,21 +13,10 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {FoilBalloonMapper.class})
 public interface FoilBalloonQuantityInOrderMapper {
 
-    //target = "foilBalloon" - обращение к ссылке класса
-
-    // поле находиться в этом классе(FoilBalloonQuantityInOrder)
     @Mapping(target = "id", ignore = true)
-    //заходим в id  FoilBalloonQuantityInOrder игнорим его в FoilBalloonQuantityInOrder
     FoilBalloonQuantityInOrder mapToQuantityInOrderEntity(FoilBalloonQuantityInOrderDTO quantityInOrder);
 
-    //---------------------------------------------------------------------
-    // игнарируемое поле(foilBalloonQuantityInOrders) находиться не в этом классе(FoilBalloonQuantityInOrder),
-    // а через класс(FoilBalloon)
     @Mapping(target = "foilBalloon", qualifiedByName = {"FoilBalloonMapper", "mapToFoilBalloonDTO"})
-    // заходим в privatе FoilBalloon foilBalloon,
-    // пушто у него есть private List<FoilBalloonQuantityInOrderDTO> foilBalloonQuantityInOrders
-    // и в его маппере (FoilBalloonMapper) игнорим поле foilBalloonQuantityInOrders
-    // с помощу метода mapToFoilBalloonDTO в нем
     @Mapping(target = "order", ignore = true)
     FoilBalloonQuantityInOrderDTO mapToQuantityInOrderDTO(FoilBalloonQuantityInOrder quantityInOrder);
 

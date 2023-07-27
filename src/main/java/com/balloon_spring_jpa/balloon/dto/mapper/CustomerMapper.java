@@ -2,6 +2,7 @@ package com.balloon_spring_jpa.balloon.dto.mapper;
 
 import com.balloon_spring_jpa.balloon.dto.CustomerDTO;
 import com.balloon_spring_jpa.balloon.entity.Customer;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -19,5 +20,6 @@ public interface CustomerMapper {
     @Mapping(target = "orders", ignore = true)
     CustomerDTO mapToCustomerDTO(Customer customerEntity);
 
+    @IterableMapping(qualifiedByName = "mapToCustomerDTO")
     List<CustomerDTO> mapToCustomerListDTO(List<Customer> customerList);
 }

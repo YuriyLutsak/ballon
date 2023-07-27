@@ -19,8 +19,8 @@ CREATE TABLE balloons.users (
 
 INSERT INTO balloons.users
 VALUES
-('customer','{bcrypt}$2a$10$8JQjoFLFFf8cnqa7Qb/iqec7e8g4RubG0fvLXA3upe5CW3.UlIneq',true), pass: 1111
-('admin','{bcrypt}$2a$10$twkO1p11025uRPfkFkPFZe9v6uRIwg7.e361zXJEVUsXxJNFP37gi',true);    pass: 2222
+('customer','{bcrypt}$2a$10$8JQjoFLFFf8cnqa7Qb/iqec7e8g4RubG0fvLXA3upe5CW3.UlIneq',true), -- pass: 1111
+('admin','{bcrypt}$2a$10$twkO1p11025uRPfkFkPFZe9v6uRIwg7.e361zXJEVUsXxJNFP37gi',true);   -- pass: 2222
 
 
 --
@@ -41,4 +41,5 @@ CREATE TABLE balloons.authorities (
 INSERT INTO balloons.authorities
 VALUES
 ('customer','ROLE_CUSTOMER'),
-('admin','ROLE_ADMIN');
+('admin','ROLE_ADMIN'),
+('admin','ROLE_CUSTOMER');

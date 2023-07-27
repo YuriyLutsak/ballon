@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
  
-    @Query("SELECT cust FROM Customer cust JOIN FETCH cust.orders")
+    @Query("SELECT customer FROM Customer customer JOIN FETCH customer.orders")
     List<Customer> findAllWithOrders();
 }

@@ -1,9 +1,8 @@
 package com.balloon_spring_jpa.balloon.service.order;
 
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
-import com.balloon_spring_jpa.balloon.dto.OrderDTO;
-import com.balloon_spring_jpa.balloon.entity.Order;
 
+import com.balloon_spring_jpa.balloon.dto.OrderDTO;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +10,8 @@ import java.util.UUID;
 public interface OrderService {
 
     List<OrderDTO> findAll();
+
+    List<OrderDTO> findOrdersByCustomerId(UUID customerId);
 
     OrderDTO findById(UUID id);
 

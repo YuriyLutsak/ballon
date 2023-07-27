@@ -61,6 +61,21 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
 
     @Override
     @Transactional
+    public FoilBalloonDTO updateStockBalance(UUID id, int stockBalance) {
+        var balloonFromDB = foilBalloonRepository.findById(id).orElseThrow();
+        int balloonFromDBStockBalance = balloonFromDB.getStockBalance();
+
+        int result = balloonFromDBStockBalance + stockBalance;
+
+        balloonFromDB.setId(id);
+        balloonFromDB.setStockBalance(result);
+        var savedEntity = foilBalloonRepository.save(balloonFromDB);
+
+        return foilBalloonMapper.mapToFoilBalloonDTO(savedEntity);
+    }
+
+    @Override
+    @Transactional
     public BigDecimal removeFromBalanceAndCountPrice(List<FoilBalloonQuantityInOrderDTO> quantityInOrderList) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         int quantityFromListDTO;

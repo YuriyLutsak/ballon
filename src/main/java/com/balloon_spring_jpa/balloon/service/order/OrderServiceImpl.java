@@ -3,13 +3,10 @@ package com.balloon_spring_jpa.balloon.service.order;
 import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import com.balloon_spring_jpa.balloon.dto.OrderDTO;
 import com.balloon_spring_jpa.balloon.dto.mapper.CustomerMapper;
-import com.balloon_spring_jpa.balloon.dto.mapper.FoilBalloonMapper;
-import com.balloon_spring_jpa.balloon.dto.mapper.LatexBalloonMapper;
 import com.balloon_spring_jpa.balloon.dto.mapper.OrderMapper;
-import com.balloon_spring_jpa.balloon.entity.Customer;
 import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
 import com.balloon_spring_jpa.balloon.entity.LatexBalloonQuantityInOrder;
-import com.balloon_spring_jpa.balloon.entity.Order;
+import com.balloon_spring_jpa.balloon.repository.CustomerRepository;
 import com.balloon_spring_jpa.balloon.repository.OrderRepository;
 import com.balloon_spring_jpa.balloon.service.customer.CustomerService;
 import com.balloon_spring_jpa.balloon.service.foilBalloon.FoilBalloonService;
@@ -33,12 +30,20 @@ public class OrderServiceImpl implements OrderService {
     private final FoilBalloonService foilBalloonService;
     private final LatexBalloonService latexBalloonService;
     private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
 
     @Transactional
     @Override
     public List<OrderDTO> findAll() {
         var allEntities = orderRepository.findAll();
         return orderMapper.mapToOrderDTOList(allEntities);
+    }
+
+    @Override
+    public List<OrderDTO> findOrdersByCustomerId(UUID customerId) {
+      var orderList = orderRepository.findOrdersByCustomerId(customerId);
+
+        return orderMapper.mapToOrderDTOList(orderList);
     }
 
     @Transactional

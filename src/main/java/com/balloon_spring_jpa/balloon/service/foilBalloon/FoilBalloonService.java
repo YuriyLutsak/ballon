@@ -17,6 +17,8 @@ public interface FoilBalloonService {
 
     FoilBalloonDTO update(FoilBalloonDTO balloon, UUID id);
 
+    FoilBalloonDTO updateStockBalance(UUID id, int stockBalance);
+
     FoilBalloonDTO findById(UUID id);
 
     void delete(UUID id);
