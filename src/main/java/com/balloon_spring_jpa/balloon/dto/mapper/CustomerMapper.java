@@ -14,11 +14,11 @@ import java.util.List;
 public interface CustomerMapper {
 
     @Mapping(target = "id", ignore = true)
-    Customer mapToCustomerEntity(CustomerDTO customer);
+    Customer mapToCustomerEntity(CustomerDTO customerDTO);
 
     @Named("mapToCustomerDTO")
     @Mapping(target = "orders", ignore = true)
-    CustomerDTO mapToCustomerDTO(Customer customerEntity);
+    CustomerDTO mapToCustomerDTO(Customer customer);
 
     @IterableMapping(qualifiedByName = "mapToCustomerDTO")
     List<CustomerDTO> mapToCustomerListDTO(List<Customer> customerList);

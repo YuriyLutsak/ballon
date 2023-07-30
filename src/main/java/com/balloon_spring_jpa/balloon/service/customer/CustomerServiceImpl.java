@@ -2,6 +2,8 @@ package com.balloon_spring_jpa.balloon.service.customer;
 
 import com.balloon_spring_jpa.balloon.dto.CustomerDTO;
 import com.balloon_spring_jpa.balloon.dto.mapper.CustomerMapper;
+import com.balloon_spring_jpa.balloon.entity.Customer;
+import com.balloon_spring_jpa.balloon.exception.CustomerException;
 import com.balloon_spring_jpa.balloon.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +36,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public CustomerDTO findById(UUID id) {
-        var customerById = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("no such entity"));
+        Customer customerById = customerRepository.findById(id)
+                    .orElseThrow(() -> new CustomerException(id));
         return customerMapper.mapToCustomerDTO(customerById);
     }
 
@@ -50,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public CustomerDTO update(CustomerDTO customer, UUID id) {
-        customerRepository.findById(id).orElseThrow();
+        customerRepository.findById(id).orElseThrow(() -> new CustomerException(id));
         var toEntity = customerMapper.mapToCustomerEntity(customer);
         toEntity.setId(id);
         var savingEntity = customerRepository.save(toEntity);
@@ -60,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public void delete(UUID id) {
-        var customerById = customerRepository.findById(id).orElseThrow();
+        var customerById = customerRepository.findById(id).orElseThrow(() -> new CustomerException(id));
         customerRepository.delete(customerById);
     }
 }

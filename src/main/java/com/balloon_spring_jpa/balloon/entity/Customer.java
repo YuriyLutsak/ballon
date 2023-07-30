@@ -35,7 +35,7 @@ public class Customer {
     private String name;
 
     @Column(name = "phone_number")
-    private long phone_number;
+    private long phoneNumber;
 
     @Column(name = "total_balance")
     private BigDecimal totalBalance = BigDecimal.ZERO;

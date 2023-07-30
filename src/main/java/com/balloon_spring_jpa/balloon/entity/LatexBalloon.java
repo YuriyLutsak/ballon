@@ -46,10 +46,10 @@ public class LatexBalloon {
     @Column(name = "stock_balance")
     private int stockBalance;
 
-    @Column(name = "is_glue")
-    private boolean isGlue;
+    @Column(name = "is_glued")
+    private boolean isGlued;
 
     @JsonIgnore
     @OneToMany(mappedBy = "latexBalloon", fetch = FetchType.LAZY)
-    private List<LatexBalloonQuantityInOrder> latexBalloonQuantityInOrder;
+    private List<LatexBalloonQuantityInOrder> latexBalloonQuantityInOrders;
 }

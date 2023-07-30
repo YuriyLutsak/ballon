@@ -14,7 +14,7 @@ import java.util.List;
 public interface LatexBalloonQuantityInOrderMapper {
 
     @Mapping(target = "id", ignore = true)
-    LatexBalloonQuantityInOrder mapToQuantityInOrderEntity(LatexBalloonQuantityInOrderDTO quantityInOrder);
+    LatexBalloonQuantityInOrder mapToQuantityInOrderEntity(LatexBalloonQuantityInOrderDTO quantityInOrderDTO);
 
     @Named("mapToQuantityInOrderDTOListWithoutOrder")
     @IterableMapping(qualifiedByName = "mapToQuantityInOrderDTOWithoutOrder")

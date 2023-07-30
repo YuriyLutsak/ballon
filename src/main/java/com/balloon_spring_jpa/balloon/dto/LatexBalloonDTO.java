@@ -21,6 +21,6 @@ public class LatexBalloonDTO {
     private int size;
     private BigDecimal cost;
     private int stockBalance;
-    private boolean isGlue;
-    private List<LatexBalloonQuantityInOrderDTO> latexBalloonQuantityInOrder;
+    private boolean isGlued;
+    private List<LatexBalloonQuantityInOrderDTO> latexBalloonQuantityInOrders;
 }

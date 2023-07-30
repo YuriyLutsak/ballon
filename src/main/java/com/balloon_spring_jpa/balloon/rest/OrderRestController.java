@@ -19,42 +19,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/orders")
 public class OrderRestController {
 
     private final OrderServiceImpl orderService;
 
-    @GetMapping("/orders")
+    @GetMapping("")
     public List<OrderDTO> findAll() {
         return orderService.findAll();
     }
 
-    @GetMapping("/orders/by/{customerId}")
+    @GetMapping("/by/{customerId}")
     public List<OrderDTO> findAllOrdersByCustomerId(@PathVariable UUID customerId){
         return orderService.findOrdersByCustomerId(customerId);
     }
 
-    @GetMapping("/orders/{id}")
+    @GetMapping("/{id}")
     public OrderDTO findById(@PathVariable UUID id) {
         return orderService.findById( id);
     }
 
-    @DeleteMapping("/orders/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
          orderService.delete(id);
     }
 
-    @PostMapping("/orders")
+    @PostMapping("")
     public OrderDTO save(@RequestBody OrderDTO order) {
         return orderService.save(order);
     }
 
-    @PutMapping("/orders/{id}")
+    @PutMapping("/{id}")
     public OrderDTO update(@RequestBody OrderDTO order, @PathVariable UUID id) {
         return orderService.update(order, id);
     }
 
-    @PatchMapping("/orders/{id}/{status}")
+    @PatchMapping("/{id}/{status}")
     public OrderDTO updateStatus(@PathVariable UUID id, @PathVariable OrderStatus status){
         return orderService.updateStatus(status, id);
     }

@@ -17,37 +17,37 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/customers")
 public class CustomerRestController {
 
     private final CustomerServiceImpl service;
 
-    @GetMapping("/customers")
+    @GetMapping("")
     public List<CustomerDTO> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/customers/orders")
+    @GetMapping("/orders")
     public List<CustomerDTO> findAllWithOrders(){
        return service.getAllCustomersWithOrders();
     }
 
-    @GetMapping("/customers/{id}")
+    @GetMapping("/{id}")
     public CustomerDTO findById(@PathVariable UUID id) {
         return service.findById(id);
     }
 
-    @PostMapping("/customers")
+    @PostMapping("")
     public CustomerDTO save(@RequestBody CustomerDTO customer) {
         return service.save(customer);
     }
 
-    @DeleteMapping("/customers/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         service.delete(id);
     }
 
-    @PutMapping("/customers/{id}")
+    @PutMapping("/{id}")
     public CustomerDTO update(@RequestBody CustomerDTO customer, @PathVariable UUID id) {
         return service.update(customer, id);
     }

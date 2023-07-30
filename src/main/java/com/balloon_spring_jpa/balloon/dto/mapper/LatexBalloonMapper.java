@@ -13,16 +13,15 @@ import java.util.List;
 public interface LatexBalloonMapper {
 
     @Mapping(target = "id", ignore = true)
-    LatexBalloon mapToLatexBalloonEntity(LatexBalloonDTO latexBalloon);
+    LatexBalloon mapToLatexBalloonEntity(LatexBalloonDTO latexBalloonDTO);
 
     @Named("mapToLatexBalloonWithoutQuantityInOrder")
-    @Mapping(target = "latexBalloonQuantityInOrder", ignore = true)
-    LatexBalloonDTO mapToLatexBalloonWithoutQuantityInOrder(LatexBalloon latexBalloonEntity);
+    @Mapping(target = "latexBalloonQuantityInOrders", ignore = true)
+    LatexBalloonDTO mapToLatexBalloonWithoutQuantityInOrder(LatexBalloon latexBalloon);
 
-    @Mapping(target = "latexBalloonQuantityInOrder", ignore = true)
-    LatexBalloonDTO mapToLatexBalloonDTO(LatexBalloon latexBalloonEntity);
+    @Mapping(target = "latexBalloonQuantityInOrders", ignore = true)
+    LatexBalloonDTO mapToLatexBalloonDTO(LatexBalloon latexBalloon);
 
-    @Mapping(target = "latexBalloonQuantityInOrder",ignore = true)
-    List<LatexBalloonDTO> mapToLatexBalloonListDTO(List<LatexBalloon> latexBalloonEntities);
-
+    @Mapping(target = "latexBalloonQuantityInOrders",ignore = true)
+    List<LatexBalloonDTO> mapToLatexBalloonListDTO(List<LatexBalloon> latexBalloonList);
 }

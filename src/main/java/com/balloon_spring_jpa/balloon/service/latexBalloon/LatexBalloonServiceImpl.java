@@ -3,6 +3,7 @@ package com.balloon_spring_jpa.balloon.service.latexBalloon;
 import com.balloon_spring_jpa.balloon.dto.LatexBalloonDTO;
 import com.balloon_spring_jpa.balloon.dto.LatexBalloonQuantityInOrderDTO;
 import com.balloon_spring_jpa.balloon.dto.mapper.LatexBalloonMapper;
+import com.balloon_spring_jpa.balloon.exception.*;
 import com.balloon_spring_jpa.balloon.repository.LatexBalloonRepository;
 import jakarta.transaction.Transactional;
 
@@ -22,8 +23,8 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
     @Override
     @Transactional
     public List<LatexBalloonDTO> findAll() {
-        var entitiesFromDB = latexBalloonRepository.findAll();
-        return latexBalloonMapper.mapToLatexBalloonListDTO(entitiesFromDB);
+        var latexBalloonList = latexBalloonRepository.findAll();
+        return latexBalloonMapper.mapToLatexBalloonListDTO(latexBalloonList);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
     @Transactional
     public LatexBalloonDTO update(LatexBalloonDTO latexBalloon, UUID id) {
         latexBalloonRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("no such toEntity"));
+                .orElseThrow(() -> new LatexBalloonException(id));
         var toEntity = latexBalloonMapper.mapToLatexBalloonEntity(latexBalloon);
 
         toEntity.setId(id);
@@ -50,9 +51,9 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
     @Override
     @Transactional
     public LatexBalloonDTO findById(UUID id) {
-        var entity = latexBalloonRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("no such entity"));
-        return latexBalloonMapper.mapToLatexBalloonDTO(entity);
+        var latexBalloon = latexBalloonRepository.findById(id)
+                .orElseThrow(() -> new LatexBalloonException(id));
+        return latexBalloonMapper.mapToLatexBalloonDTO(latexBalloon);
     }
 
     @Override
@@ -66,28 +67,28 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
         int quantity;
 
         for (LatexBalloonQuantityInOrderDTO inOrder : quantityInOrders) {
-            var balloonFromListDTO = inOrder.getLatexBalloon();
+            var latexBalloonDTO = inOrder.getLatexBalloon();
             quantity = inOrder.getQuantity();
 
-            var balloonFromDB = latexBalloonRepository.findById(balloonFromListDTO.getId()).orElseThrow();
+            var latexBalloon = latexBalloonRepository.findById(latexBalloonDTO.getId())
+                    .orElseThrow(() -> new LatexBalloonException(inOrder.getLatexBalloon().getId()));
 
-            int result = balloonFromDB.getStockBalance() - quantity;
+            int result = latexBalloon.getStockBalance() - quantity;
 
             if (result < 0) {
-                throw new RuntimeException(
-                        "Your order quantity of latex balloon bigger than stock balance");
+                throw new StockBalanceException(quantity - latexBalloon.getStockBalance());
             }
 
-            var priceOfOrder = balloonFromDB.getCost().multiply(BigDecimal.valueOf(quantity));
+            var priceOfOrder = latexBalloon.getCost().multiply(BigDecimal.valueOf(quantity));
 
             totalPrice = totalPrice.add(priceOfOrder);
 
-            balloonFromDB.setStockBalance(result);
-            balloonFromListDTO.setStockBalance(result);
-            balloonFromListDTO.setGlue(balloonFromDB.isGlue());
-            balloonFromListDTO.setCost(balloonFromDB.getCost());
-            balloonFromListDTO.setSize(balloonFromDB.getSize());
-            balloonFromListDTO.setBalloonType(balloonFromDB.getBalloonType());
+            latexBalloon.setStockBalance(result);
+            latexBalloonDTO.setStockBalance(result);
+            latexBalloonDTO.setGlued(latexBalloon.isGlued());
+            latexBalloonDTO.setCost(latexBalloon.getCost());
+            latexBalloonDTO.setSize(latexBalloon.getSize());
+            latexBalloonDTO.setBalloonType(latexBalloon.getBalloonType());
         }
         return totalPrice;
     }

@@ -17,7 +17,7 @@ public class CustomerDTO {
 
     private UUID id;
     private String name;
-    private long phone_number;
+    private long phoneNumber;
     private BigDecimal totalBalance = BigDecimal.ZERO;
     private List<OrderDTO> orders;
 }

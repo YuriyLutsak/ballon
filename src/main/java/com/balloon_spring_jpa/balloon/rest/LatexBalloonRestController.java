@@ -17,32 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/latex")
+@RequestMapping("/api/latex/balloons")
 public class LatexBalloonRestController {
 
     private final LatexBalloonServiceImpl latexBalloonService;
 
-    @GetMapping("/balloons")
+    @GetMapping("")
     public List<LatexBalloonDTO> findAll() {
         return latexBalloonService.findAll();
     }
 
-    @PostMapping("/balloons")
+    @PostMapping("")
     public LatexBalloonDTO save(@RequestBody LatexBalloonDTO latexBalloon) {
         return latexBalloonService.save(latexBalloon);
     }
 
-    @PutMapping("/balloons/{id}")
+    @PutMapping("/{id}")
     public LatexBalloonDTO update(@RequestBody LatexBalloonDTO latexBalloon, @PathVariable UUID id) {
         return latexBalloonService.update(latexBalloon, id);
     }
 
-    @GetMapping("/balloons/{id}")
+    @GetMapping("/{id}")
     public LatexBalloonDTO findById(@PathVariable UUID id) {
         return latexBalloonService.findById(id);
     }
 
-    @DeleteMapping("/balloons/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         latexBalloonService.delete(id);
     }

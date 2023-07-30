@@ -14,12 +14,12 @@ import java.util.List;
 public interface FoilBalloonMapper {
 
     @Mapping(target = "id", ignore = true)
-    FoilBalloon mapToFoilBalloonEntity(FoilBalloonDTO foilBalloon);
+    FoilBalloon mapToFoilBalloonEntity(FoilBalloonDTO foilBalloonDTO);
 
     @Named("mapToFoilBalloonDTO")
     @Mapping(target = "foilBalloonQuantityInOrders", ignore = true)
-    FoilBalloonDTO mapToFoilBalloonDTO(FoilBalloon foilBalloonEntity);
+    FoilBalloonDTO mapToFoilBalloonDTO(FoilBalloon foilBalloon);
 
     @IterableMapping(qualifiedByName = "mapToFoilBalloonDTO")
-    List<FoilBalloonDTO> mapToListFoilBalloonDTO(List<FoilBalloon> balloonListEntity);
+    List<FoilBalloonDTO> mapToListFoilBalloonDTO(List<FoilBalloon> balloonList);
 }

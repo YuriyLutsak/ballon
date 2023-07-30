@@ -4,21 +4,20 @@ import com.balloon_spring_jpa.balloon.balloonEnum.OrderStatus;
 import com.balloon_spring_jpa.balloon.dto.OrderDTO;
 import com.balloon_spring_jpa.balloon.dto.mapper.CustomerMapper;
 import com.balloon_spring_jpa.balloon.dto.mapper.OrderMapper;
-import com.balloon_spring_jpa.balloon.entity.FoilBalloonQuantityInOrder;
-import com.balloon_spring_jpa.balloon.entity.LatexBalloonQuantityInOrder;
+import com.balloon_spring_jpa.balloon.entity.*;
+import com.balloon_spring_jpa.balloon.exception.OrderException;
 import com.balloon_spring_jpa.balloon.repository.CustomerRepository;
 import com.balloon_spring_jpa.balloon.repository.OrderRepository;
 import com.balloon_spring_jpa.balloon.service.customer.CustomerService;
 import com.balloon_spring_jpa.balloon.service.foilBalloon.FoilBalloonService;
 import com.balloon_spring_jpa.balloon.service.latexBalloon.LatexBalloonService;
 import jakarta.transaction.Transactional;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,21 +34,20 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public List<OrderDTO> findAll() {
-        var allEntities = orderRepository.findAll();
-        return orderMapper.mapToOrderDTOList(allEntities);
+        var orderList = orderRepository.findAll();
+        return orderMapper.mapToOrderDTOList(orderList);
     }
 
     @Override
     public List<OrderDTO> findOrdersByCustomerId(UUID customerId) {
-      var orderList = orderRepository.findOrdersByCustomerId(customerId);
-
+        var orderList = orderRepository.findOrdersByCustomerId(customerId);
         return orderMapper.mapToOrderDTOList(orderList);
     }
 
     @Transactional
     @Override
     public OrderDTO findById(UUID id) {
-        var orderById = orderRepository.findById(id).orElseThrow();
+        var orderById = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
         return orderMapper.mapToOrderDTO(orderById);
     }
 
@@ -61,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO update(OrderDTO order, UUID id) {
-        orderRepository.findById(id).orElseThrow();
+        orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
         var toEntity = orderMapper.mapToOrderEntity(order);
         toEntity.setId(id);
         var savingEntity = orderRepository.save(toEntity);
@@ -110,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO updateStatus(OrderStatus status, UUID id) {
-        var orderFromDB = orderRepository.findById(id).orElseThrow();
+        var orderFromDB = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
         var customerFromOrder = orderFromDB.getCustomer();
 
         if (status.equals(OrderStatus.DONE)) {

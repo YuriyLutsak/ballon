@@ -11,14 +11,14 @@ import java.util.List;
 public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
-    Order mapToOrderEntity(OrderDTO order);
+    Order mapToOrderEntity(OrderDTO orderDTO);
 
     @Mapping(target = "customer", qualifiedByName = {"CustomerMapper", "mapToCustomerDTO"})
     @Mapping(target = "latexBalloonQuantity",
             qualifiedByName = {"LatexBalloonQuantityInOrderMapper", "mapToQuantityInOrderDTOListWithoutOrder"})
     @Mapping(target = "foilBalloonQuantity",
     qualifiedByName = {"FoilBalloonQuantityInOrderMapper", "mapToQuantityInOrderDTOListWithoutOrder"})
-    OrderDTO mapToOrderDTO(Order orderEntity);
+    OrderDTO mapToOrderDTO(Order order);
 
-    List<OrderDTO> mapToOrderDTOList(List<Order> orderEntities);
+    List<OrderDTO> mapToOrderDTOList(List<Order> orderList);
 }

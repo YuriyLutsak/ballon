@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "latex_balloon_quantity_in_order")
+@Table(name = "order_latex_balloon_quantity")
 public class LatexBalloonQuantityInOrder {
 
     @Id
