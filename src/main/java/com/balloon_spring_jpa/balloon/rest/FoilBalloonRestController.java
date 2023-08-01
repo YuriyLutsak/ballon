@@ -18,17 +18,17 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/foil/balloons")
+@RequestMapping("/api/balloons/foil")
 public class FoilBalloonRestController{
 
     private final FoilBalloonServiceImpl foilBalloonService;
 
-    @GetMapping("")
+    @GetMapping
     public List<FoilBalloonDTO> findAll() {
         return foilBalloonService.findAll();
     }
 
-    @PostMapping("")
+    @PostMapping
     public FoilBalloonDTO save(@RequestBody FoilBalloonDTO foilBalloon) {
         return foilBalloonService.save(foilBalloon);
     }

@@ -39,7 +39,7 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
     @Transactional
     public LatexBalloonDTO update(LatexBalloonDTO latexBalloon, UUID id) {
         latexBalloonRepository.findById(id)
-                .orElseThrow(() -> new LatexBalloonException(id));
+                .orElseThrow(() -> new LatexBalloonNotFoundException(id));
         var toEntity = latexBalloonMapper.mapToLatexBalloonEntity(latexBalloon);
 
         toEntity.setId(id);
@@ -52,7 +52,7 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
     @Transactional
     public LatexBalloonDTO findById(UUID id) {
         var latexBalloon = latexBalloonRepository.findById(id)
-                .orElseThrow(() -> new LatexBalloonException(id));
+                .orElseThrow(() -> new LatexBalloonNotFoundException(id));
         return latexBalloonMapper.mapToLatexBalloonDTO(latexBalloon);
     }
 
@@ -71,12 +71,12 @@ public class LatexBalloonServiceImpl implements LatexBalloonService {
             quantity = inOrder.getQuantity();
 
             var latexBalloon = latexBalloonRepository.findById(latexBalloonDTO.getId())
-                    .orElseThrow(() -> new LatexBalloonException(inOrder.getLatexBalloon().getId()));
+                    .orElseThrow(() -> new LatexBalloonNotFoundException(inOrder.getLatexBalloon().getId()));
 
             int result = latexBalloon.getStockBalance() - quantity;
 
             if (result < 0) {
-                throw new StockBalanceException(quantity - latexBalloon.getStockBalance());
+                throw new NotEnoughStockBalanceException(latexBalloonDTO.getId(), quantity - latexBalloon.getStockBalance());
             }
 
             var priceOfOrder = latexBalloon.getCost().multiply(BigDecimal.valueOf(quantity));

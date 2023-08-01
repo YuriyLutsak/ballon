@@ -5,7 +5,7 @@ import com.balloon_spring_jpa.balloon.dto.OrderDTO;
 import com.balloon_spring_jpa.balloon.dto.mapper.CustomerMapper;
 import com.balloon_spring_jpa.balloon.dto.mapper.OrderMapper;
 import com.balloon_spring_jpa.balloon.entity.*;
-import com.balloon_spring_jpa.balloon.exception.OrderException;
+import com.balloon_spring_jpa.balloon.exception.OrderNotFoundException;
 import com.balloon_spring_jpa.balloon.repository.CustomerRepository;
 import com.balloon_spring_jpa.balloon.repository.OrderRepository;
 import com.balloon_spring_jpa.balloon.service.customer.CustomerService;
@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO findById(UUID id) {
-        var orderById = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        var orderById = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         return orderMapper.mapToOrderDTO(orderById);
     }
 
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO update(OrderDTO order, UUID id) {
-        orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         var toEntity = orderMapper.mapToOrderEntity(order);
         toEntity.setId(id);
         var savingEntity = orderRepository.save(toEntity);
@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public OrderDTO updateStatus(OrderStatus status, UUID id) {
-        var orderFromDB = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        var orderFromDB = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         var customerFromOrder = orderFromDB.getCustomer();
 
         if (status.equals(OrderStatus.DONE)) {

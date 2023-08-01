@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/latex/balloons")
+@RequestMapping("/api/balloons/latex")
 public class LatexBalloonRestController {
 
     private final LatexBalloonServiceImpl latexBalloonService;
 
-    @GetMapping("")
+    @GetMapping
     public List<LatexBalloonDTO> findAll() {
         return latexBalloonService.findAll();
     }
 
-    @PostMapping("")
+    @PostMapping
     public LatexBalloonDTO save(@RequestBody LatexBalloonDTO latexBalloon) {
         return latexBalloonService.save(latexBalloon);
     }

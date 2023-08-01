@@ -38,7 +38,7 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
     @Override
     public FoilBalloonDTO findById(UUID id) {
         var foilBalloon = foilBalloonRepository.findById(id)
-                .orElseThrow(() -> new FoilBalloonException(id));
+                .orElseThrow(() -> new FoilBalloonNotFoundedException(id));
         return foilBalloonMapper.mapToFoilBalloonDTO(foilBalloon);
     }
 
@@ -46,14 +46,14 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
     @Override
     public void delete(UUID id) {
         var foilBalloon = foilBalloonRepository.findById(id)
-                .orElseThrow(() -> new FoilBalloonException(id));
+                .orElseThrow(() -> new FoilBalloonNotFoundedException(id));
         foilBalloonRepository.delete(foilBalloon);
     }
 
     @Transactional
     @Override
     public FoilBalloonDTO update(FoilBalloonDTO balloon, UUID id) {
-        foilBalloonRepository.findById(id).orElseThrow(() -> new FoilBalloonException(id));
+        foilBalloonRepository.findById(id).orElseThrow(() -> new FoilBalloonNotFoundedException(id));
         var toEntity = foilBalloonMapper.mapToFoilBalloonEntity(balloon);
         toEntity.setId(id);
         var savingEntity = foilBalloonRepository.save(toEntity);
@@ -63,7 +63,7 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
     @Override
     @Transactional
     public FoilBalloonDTO updateStockBalance(UUID id, int stockBalance) {
-        var foilBalloon = foilBalloonRepository.findById(id).orElseThrow(() -> new FoilBalloonException(id));
+        var foilBalloon = foilBalloonRepository.findById(id).orElseThrow(() -> new FoilBalloonNotFoundedException(id));
         int foilBalloonStockBalance = foilBalloon.getStockBalance();
 
         int result = foilBalloonStockBalance + stockBalance;
@@ -87,12 +87,12 @@ public class FoilBalloonServiceImpl implements FoilBalloonService {
             quantity = inOrderDTO.getQuantity();
 
             var foilBalloon = foilBalloonRepository.findById(foilBalloonDTO.getId())
-                    .orElseThrow(() -> new FoilBalloonException(inOrderDTO.getFoilBalloon().getId()));
+                    .orElseThrow(() -> new FoilBalloonNotFoundedException(inOrderDTO.getFoilBalloon().getId()));
 
             int result = foilBalloon.getStockBalance() - quantity;
 
             if (result < 0) {
-                throw new StockBalanceException(quantity - foilBalloon.getStockBalance());
+                throw new NotEnoughStockBalanceException(foilBalloonDTO.getId(), quantity - foilBalloon.getStockBalance());
             }
 
             totalPrice = totalPrice.add(foilBalloon.getCost().multiply(BigDecimal.valueOf(quantity)));

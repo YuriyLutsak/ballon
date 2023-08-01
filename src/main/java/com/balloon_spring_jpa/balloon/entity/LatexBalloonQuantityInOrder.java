@@ -1,6 +1,5 @@
 package com.balloon_spring_jpa.balloon.entity;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

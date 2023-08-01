@@ -22,7 +22,7 @@ public class CustomerRestController {
 
     private final CustomerServiceImpl service;
 
-    @GetMapping("")
+    @GetMapping
     public List<CustomerDTO> findAll() {
         return service.findAll();
     }
@@ -37,7 +37,7 @@ public class CustomerRestController {
         return service.findById(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     public CustomerDTO save(@RequestBody CustomerDTO customer) {
         return service.save(customer);
     }

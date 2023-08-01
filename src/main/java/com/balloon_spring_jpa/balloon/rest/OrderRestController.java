@@ -24,7 +24,7 @@ public class OrderRestController {
 
     private final OrderServiceImpl orderService;
 
-    @GetMapping("")
+    @GetMapping
     public List<OrderDTO> findAll() {
         return orderService.findAll();
     }
@@ -44,7 +44,7 @@ public class OrderRestController {
          orderService.delete(id);
     }
 
-    @PostMapping("")
+    @PostMapping
     public OrderDTO save(@RequestBody OrderDTO order) {
         return orderService.save(order);
     }
