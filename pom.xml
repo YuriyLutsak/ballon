@@ -120,7 +120,6 @@
 						<artifactId>lombok-mapstruct-binding</artifactId>
 						<version>${lombok-mapstruct-binding.version}</version>
 					</path>
-					<!-- Mapstruct should follow the lombok path(s) -->
 					<path>
 						<groupId>org.mapstruct</groupId>
 						<artifactId>mapstruct-processor</artifactId>
